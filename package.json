@@ -1,0 +1,21 @@
+{
+  "name": "papa-fit-node",
+  "version": "1.0.0",
+  "description": "phonebook app",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon app.js"
+  },
+  "author": "manoj kumar r",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "mongoose": "^5.7.4",
+    "mongoose-unique-validator": "^2.0.3"
+  },
+  "devDependencies": {
+    "dotenv": "^8.1.0",
+    "nodemon": "^1.19.3"
+  }
+}
