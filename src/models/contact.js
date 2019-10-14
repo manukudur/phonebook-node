@@ -11,12 +11,7 @@ const contact = mongoose.Schema({
   name: {
     type: String,
     trim: true,
-    lowercase: true,
     required: [true, "Name is required"]
-    // match: [
-    //   /^[a-zA-Z ]*$/,
-    //   "first name should be only alphabetical letters, A–Z or a–z."
-    // ]
   },
   phone_number: {
     type: Number,
@@ -33,7 +28,10 @@ const contact = mongoose.Schema({
   email_id: {
     type: String,
     trim: true,
-    lowercase: true,
+    index: {
+      unique: true,
+      partialFilterExpression: { email_id: { $type: "string" } } //allows muntiple null
+    },
     match: [
       /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
       "please fill a valid email address"
@@ -43,9 +41,5 @@ const contact = mongoose.Schema({
     type: String,
     trim: true
   }
-});
-
-contact.plugin(uniqueValidator, {
-  message: "{PATH} already exists"
 });
 module.exports = mongoose.model("Contact", contact);

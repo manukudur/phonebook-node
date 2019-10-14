@@ -61,7 +61,7 @@ router.patch("/contact/:id", async (req, res) => {
           address: req.body.address
         }
       },
-      { new: true, useFindAndModify: false }
+      { new: true, useFindAndModify: false, runValidators: true }
     );
     return res
       .status(201)

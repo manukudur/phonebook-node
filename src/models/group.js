@@ -12,7 +12,6 @@ const group = mongoose.Schema({
     type: String,
     trim: true,
     unique: true,
-    lowercase: true,
     required: [true, "Name is required"]
   },
   contacts: [{ type: mongoose.Schema.Types.ObjectId, ref: "Contact" }]
