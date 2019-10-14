@@ -4,6 +4,7 @@ const ObjectId = require("mongoose").Types.ObjectId;
 
 // LOCAL IMPORTS
 const Contact = require("../models/contact");
+const Group = require("../models/group");
 
 router.get("/contacts", async (req, res) => {
   try {
@@ -14,13 +15,32 @@ router.get("/contacts", async (req, res) => {
   }
 });
 
+async function commonInGroups(id) {
+  let common = [];
+  try {
+    let groups = await Group.find().populate();
+    if (groups.length === 0) return res.json({ message: "no groups" });
+    groups.forEach(element => {
+      if (element.contacts.length !== 0) {
+        if (element.contacts.includes(id)) {
+          common.push(element.name);
+        }
+      }
+    });
+    return common;
+  } catch (error) {
+    return common;
+  }
+}
+
 router.get("/contact/:id", async (req, res) => {
   if (!ObjectId.isValid(req.params.id)) {
     return res.status(400).send(`No record with given id : ${req.params.id}`);
   }
   try {
     let contact = await Contact.findById(req.params.id);
-    res.status(201).json(contact);
+    let commonIn = await commonInGroups(req.params.id);
+    res.status(201).json({ contact, commonIn: commonIn });
   } catch (error) {
     res.status(400).json(error);
   }

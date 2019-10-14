@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const uniqueValidator = require("mongoose-unique-validator");
 
 const contact = mongoose.Schema({
   type: { type: String, default: "contact" },
@@ -20,13 +21,14 @@ const contact = mongoose.Schema({
   phone_number: {
     type: Number,
     required: [true, "phone number is required"],
-    trim: true
-    // validate: {
-    //   validator: function(number) {
-    //     return /^\d{10}$/.test(number);
-    //   },
-    //   message: () => `phone number should be 10 digits, eg:(9012345678)`
-    // }
+    unique: true,
+    trim: true,
+    validate: {
+      validator: function(number) {
+        return /^[6-9]\d{9}$/.test(number);
+      },
+      message: () => `invalid phone number`
+    }
   },
   email_id: {
     type: String,
@@ -43,4 +45,7 @@ const contact = mongoose.Schema({
   }
 });
 
+contact.plugin(uniqueValidator, {
+  message: "{PATH} already exists"
+});
 module.exports = mongoose.model("Contact", contact);
