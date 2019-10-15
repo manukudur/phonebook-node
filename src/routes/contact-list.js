@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const ObjectId = require("mongoose").Types.ObjectId;
 
 // LOCAL IMPORTS
 const Group = require("../models/group");
@@ -28,6 +29,21 @@ router.get("/common/:id", async (req, res) => {
       }
     });
     res.status(200).json(common);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
+router.get("/notin/:id", async (req, res) => {
+  if (!ObjectId.isValid(req.params.id)) {
+    return res.status(400).send(`No record with given id : ${req.params.id}`);
+  }
+  try {
+    let group = await Group.findById(req.params.id);
+    let contacts = await Contact.find({
+      _id: { $nin: group.contacts }
+    });
+    res.status(200).json(contacts);
   } catch (error) {
     res.status(500).json(error);
   }
