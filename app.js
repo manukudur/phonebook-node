@@ -13,6 +13,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/api/", require("./src/routes/contact"));
 app.use("/api/", require("./src/routes/group"));
 app.use("/api/", require("./src/routes/contact-list"));
+app.use("/api/", require("./src/validations/unique-check"));
 
 // ROUTES
 app.get("/", (req, res) => {
